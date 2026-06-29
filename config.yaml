@@ -1,0 +1,62 @@
+target:
+  domain: ""
+  scope: [""]
+  exclude: ["/logout"]
+  depth: 4
+  threads: 40
+
+anonymity:
+  use_tor: true
+  tor_socks: 127.0.0.1:9050
+  tor_control: 127.0.0.1:9051
+  rotate_identity_every: 25
+  proxy_chain: []
+  user_agent_rotation: true
+  random_delay: [0.5, 3.0]
+
+waf:
+  detect: true
+  bypass_strategies: ["case_mix", "unicode", "comment_split", "h2c", "tab_newline", "double_enc"]
+  rate_limit_backoff: true
+
+http:
+  timeout: 15
+  retries: 3
+  verify_tls: false
+  follow_redirects: false
+
+ai:
+  enabled: true
+  provider: "openai"  # openai | anthropic | ollama
+  api_key: "${OPENAI_API_KEY}"
+  model: "gpt-4o"
+  base_url: "https://api.openai.com/v1"
+  spa_analysis: true
+  business_logic_generation: true
+  verify_findings: true
+
+scanning:
+  verify_findings: true
+  false_positive_threshold: 0.7
+  passive_only: false
+  active_intensity: "aggressive"
+  incremental: true
+  distributed: false
+
+enterprise:
+  dashboard_enabled: true
+  dashboard_port: 8000
+  rbac_enabled: true
+  integrations:
+    jira:
+      url: "${JIRA_URL}"
+      api_key: "${JIRA_API_KEY}"
+    slack:
+      webhook: "${SLACK_WEBHOOK}"
+    teams:
+      webhook: "${TEAMS_WEBHOOK}"
+
+reporting:
+  output_dir: "reports"
+  formats: ["json", "html", "md"]
+  redact_internal: true
